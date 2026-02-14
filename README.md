@@ -23,7 +23,9 @@ PilotData_V1_10232025/
 │   └── heatmap_gazepoint/     # Gaze density and coordinate visualizations
 │       ├── animation/         # Compiled MP4 videos
 │       ├── gaze_point/        # Raw coordinate PNG frames
-│       └── heatmap/           # Density map PNG frames
+│       ├── gaze_point_merge/  # Merged PNG frames
+│       ├── heatmap/           # Density map PNG frames
+│       └── heatmap_merge/  # Merged PNG frames
 └── [Subject_Task]/            # Raw data source folders
     ├── world.mp4              # Scene camera video
     ├── world_timestamps.npy   # Sync timestamps
