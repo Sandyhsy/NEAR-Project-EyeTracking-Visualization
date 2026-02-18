@@ -15,6 +15,8 @@ This repository contains a Python-based data analysis pipeline for the **NEAR Pr
 
 Google Drive Link for the outputs: https://drive.google.com/drive/folders/1Faj747rCdxj26TOu5yEzjPpAe-OYxDeq?usp=sharing
 <br>
+Slides: https://docs.google.com/presentation/d/1O7bTlNXFIGug2euTmfhkF4tqT95M0Ipp1ZLi2jjcgYE/edit?usp=sharing
+<br>
 The pipeline organizes processed outputs into subdirectories within `1_Data_Analysis`, while reading raw data from subject-specific task folders:
 
 ```text
