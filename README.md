@@ -1,4 +1,24 @@
 # NEAR Project Visualization
+---
+
+## Full Workflow Summary
+```text
+Raw Eye Tracking Data
+        ↓
+Preprocessing & Window Segmentation
+        ↓
+Frame Extraction
+        ↓
+Heatmap & Gaze Visualization
+        ↓
+Fixation / Pupil Analysis
+        ↓
+LLM Attention Interpretation
+        ↓
+Saved Outputs (Drive)
+        ↓
+Offline Interactive Demo
+```
 
 ---
 ## [Eye-tracking Visualization](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/Eye_Tracking_Data_Process.ipynb)
@@ -110,3 +130,37 @@ A flow representing the data movement from raw input to LLM-generated insights:
 5. **Final Output:** Save descriptive summaries and structured analysis back to Google Drive.
 
 ---
+
+## [Offline Demo Source Code](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/offline_demo.py)
+
+- The offline interactive visualization demo is implemented using Streamlit.
+- This demo does not require API access and uses pre-generated outputs.
+
+File: `offline_demo.py`
+
+## Purpose
+
+This script provides a local interactive interface to:
+
+- Select task category (Describe / Compare / Recall)
+- Select frame ID
+- Play sequential frames with adjustable interval
+- View:
+  - Original image
+  - AOI overlay
+  - LLM response text
+  - Heatmap video
+
+## Features
+
+- Playback interval control (0–3 seconds)
+- Manual frame selection
+- Start / Stop playback
+- White background UI for presentation clarity
+
+## How to Run
+
+```bash
+pip install streamlit
+streamlit run offline_demo.py
+```
