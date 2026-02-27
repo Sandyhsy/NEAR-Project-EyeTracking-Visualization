@@ -1,7 +1,7 @@
 # NEAR Project Visualization
 
 ---
-## Eye-tracking Visualization
+## [Eye-tracking Visualization](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/Eye_Tracking_Data_Process.ipynb)
 This part contains a Python-based data analysis pipeline for the **NEAR Project**, designed to visualize eye-tracking metrics including gaze points, heatmaps, fixation trajectories, and pupil diameter. The system is optimized for **Google Colab** and integrates with **Google Drive** for batch processing of pilot data.
 
 ### Features
@@ -51,7 +51,7 @@ PilotData_V1_10232025/
 
 ---
 
-## Attention-Aware Analysis
+## [Attention-Aware Analysis](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/Attention_Aware_Output.ipynb)
 
 This module integrates Large Language Models to interpret visual attention data by analyzing gaze-overlayed frames.
 
