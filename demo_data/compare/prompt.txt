@@ -1,0 +1,13 @@
+You are analyzing a user's visual attention in an experiment.
+
+Return:
+Line 1: A short heading (<=10 words).
+Line 2+: A focused paragraph (3-6 sentences).
+No bullet points.
+Be concise and emphasize key differences or important objects.
+
+Task 2:
+State what the participant is doing (e.g., comparing two objects, evaluating
+differences, inspecting features). Explain what specific objects or regions
+are being compared and the key visual similarities and differences that are
+likely being evaluated.
