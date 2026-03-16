@@ -104,3 +104,38 @@ This component provides a local interactive visualization interface for the NEAR
 pip install streamlit
 streamlit run offline_demo.py
 ```
+
+---
+
+### 4. [Online Demo](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/online_demo.py)
+
+Streamlit-based interactive visualization with real-time LLM analysis.
+
+This component provides an online visualization interface for the NEAR Project that integrates eye-tracking visualizations with live multimodal LLM inference. Unlike the offline demo, responses are generated dynamically through API calls based on the current AOI images.
+
+#### Features
+
+- Select task category (Describe / Compare / Recall)
+- Manual frame selection
+- Adjustable playback interval
+- Sequential frame playback
+- View:
+  - Original image
+  - AOI overlay
+  - LLM response text
+  - Heatmap video
+- Automatic caching of generated responses
+
+#### How to Run
+
+Create a `.env` file in the project root:
+
+```bash
+OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=gpt-4o
+```
+
+```bash
+pip install streamlit
+streamlit run online_demo.py
+```
