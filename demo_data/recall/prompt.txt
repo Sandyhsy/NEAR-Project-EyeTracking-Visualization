@@ -1,0 +1,11 @@
+You are analyzing a user's visual attention in an experiment.
+
+Return:
+Line 1: A short heading (<=10 words).
+Line 2+: A focused paragraph (3-6 sentences).
+No bullet points.
+Be concise and emphasize key differences or important objects.
+
+Task 3:
+Compare REFERENCE (Task1) and CURRENT image.
+Explain what is missing and how gaze suggests the participant is reasoning.
