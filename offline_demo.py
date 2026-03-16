@@ -66,7 +66,7 @@ def task_title(task: str) -> str:
 def st_image_compat(img, **kwargs):
     """Compat wrapper for st.image across Streamlit versions."""
     try:
-        return st.image(img, use_container_width=True, **kwargs)
+        return st.image(img, width='stretch', **kwargs)
     except TypeError:
         return st.image(img, use_column_width=True, **kwargs)
 
@@ -110,8 +110,15 @@ if "frame_idx" not in st.session_state:
 if "selected_id" not in st.session_state:
     st.session_state.selected_id = None
 if "play_interval" not in st.session_state:
-    st.session_state.play_interval = 1.0
+    st.session_state.play_interval = 2.0
 
+# Response latency simulation
+if "last_rendered_id" not in st.session_state:
+    st.session_state.last_rendered_id = None
+if "last_task" not in st.session_state:
+    st.session_state.last_task = st.session_state.task
+if "response_delay_s" not in st.session_state:
+    st.session_state.response_delay_s = 0.5
 
 # -----------------------------
 # Top controls
@@ -142,20 +149,23 @@ with c_tasks:
     c_tasks.caption("Tasks")
     b1, b2, b3 = st.columns(3)
     with b1:
-        if st.button("Describe", use_container_width=True, key="btn_task_describe"):
+        if st.button("Describe", width='stretch', key="btn_task_describe"):
             st.session_state.task = "describe"
             st.session_state.playing = False
             st.session_state.frame_idx = 0
+            st.session_state.last_rendered_id = None
     with b2:
-        if st.button("Compare", use_container_width=True, key="btn_task_compare"):
+        if st.button("Compare", width='stretch', key="btn_task_compare"):
             st.session_state.task = "compare"
             st.session_state.playing = False
             st.session_state.frame_idx = 0
+            st.session_state.last_rendered_id = None
     with b3:
-        if st.button("Recall", use_container_width=True, key="btn_task_recall"):
+        if st.button("Recall", width='stretch', key="btn_task_recall"):
             st.session_state.task = "recall"
             st.session_state.playing = False
             st.session_state.frame_idx = 0
+            st.session_state.last_rendered_id = None
 
 # Reload after task changes (so dropdown options match the active task)
 task_dir = DATA_ROOT / st.session_state.task
@@ -184,20 +194,20 @@ with c_id:
         st.session_state.frame_idx = ids.index(selected)
 
 # Interval arrows + slider
-min_ivl = 0.0
+min_ivl = 1.0
 max_ivl = 3.0
 step_ivl = 0.1
 
 with c_slider:
     st.caption("Playback interval (seconds)")
     c_dec, c_slider, c_inc = st.columns([0.45, 2.2, 0.45])
-    
+
     with c_dec:
-        if st.button("◀", use_container_width=True, key="interval_dec"):
+        if st.button("◀", width='stretch', key="interval_dec"):
             st.session_state.play_interval = max(min_ivl, round(st.session_state.play_interval - step_ivl, 1))
 
     with c_inc:
-        if st.button("▶", use_container_width=True, key="interval_inc"):
+        if st.button("▶", width='stretch', key="interval_inc"):
             st.session_state.play_interval = min(max_ivl, round(st.session_state.play_interval + step_ivl, 1))
 
     with c_slider:
@@ -218,13 +228,13 @@ with c_switch:
     col_stop = st.container()
 
     with col_start:
-        if st.button("Start", use_container_width=True, key="btn_start"):
+        if st.button("Start", width='stretch', key="btn_start"):
             st.session_state.playing = True
             st.session_state.frame_idx = 0
             st.rerun()
 
     with col_stop:
-        if st.button("Stop", use_container_width=True, key="btn_stop"):
+        if st.button("Stop", width='stretch', key="btn_stop"):
             st.session_state.playing = False
             st.rerun()
 
@@ -237,6 +247,12 @@ st.subheader(f"{task_title(st.session_state.task)} Visual")
 # Clamp frame index
 st.session_state.frame_idx = max(0, min(st.session_state.frame_idx, len(ids) - 1))
 current_id = ids[st.session_state.frame_idx]
+
+# Delay response when:
+# 1) playback is running, OR
+# 2) user changed the frame (dropdown selection) while paused
+# should_delay_response = st.session_state.playing or (current_id != st.session_state.last_rendered_id)
+should_delay_response = (current_id != st.session_state.last_rendered_id)
 
 # Row: Original | AOI | Responses
 col_img, col_aoi, col_resp = st.columns([1.15, 0.65, 1.15])
@@ -258,9 +274,9 @@ with col_aoi:
         single_path = get_image_path(task_dir, "aois", current_id)
 
         if ref_path.exists() and cur_path.exists():
-            st.markdown("**Reference**")
+            st.markdown("**Reference Image**")
             st_image_compat(str(ref_path))
-            st.markdown("**Current**")
+            st.markdown("**Current View**")
             st_image_compat(str(cur_path))
         elif cur_path.exists():
             st_image_compat(str(cur_path))
@@ -277,13 +293,25 @@ with col_aoi:
             st_image_compat(str(aoi_path))
         else:
             st.warning(f"Missing: {aoi_path}")
-
+ 
+    
 with col_resp:
     st.caption("Responses")
-    resp_text = responses.get(current_id, "")
     st.markdown(f"**ID {current_id}**")
-    st.write(resp_text if resp_text else "(No response text)")
 
+    resp_slot = st.empty()  # Single placeholder: always overwrite the response area
+
+    resp_text = responses.get(current_id, "")
+    if should_delay_response:
+        resp_slot.info("Generating response...")
+        time.sleep(float(st.session_state.response_delay_s))  # 0.5s
+        # Overwrite the placeholder with the final response
+        resp_slot.write(resp_text if resp_text else "(No response text)")
+    else:
+        resp_slot.write(resp_text if resp_text else "(No response text)")
+
+# Update last rendered frame id after drawing UI
+st.session_state.last_rendered_id = current_id
 
 # -----------------------------
 # Heatmap video
