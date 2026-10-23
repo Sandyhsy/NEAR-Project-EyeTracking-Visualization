@@ -46,7 +46,7 @@ This module implements the eye-tracking visualization pipeline for the NEAR Proj
 
 ---
 
-### 2. [Attention-Aware Interpretation](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/Attention_Aware_Output.ipynb)
+### 2. [Attention-Aware Interpretation](https://github.com/Sandyhsy/NEAR-Project-EyeTracking-Visualization/blob/main/Ayu)
 
 Uses GPT-4o to generate task-aware summaries of visual attention.
 
